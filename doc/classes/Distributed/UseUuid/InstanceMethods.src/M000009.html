@@ -1,0 +1,51 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>new (Distributed::UseUuid::InstanceMethods)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <link rel="stylesheet" href="../../../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body class="standalone-code">
+  <pre><span class="ruby-comment cmt"># File lib/use_uuid.rb, line 92</span>
+      <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">attrs</span> = {}, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>) 
+        <span class="ruby-comment cmt"># let user specify schema less attrs in the attrs hash just like normal attrs, even though  </span>
+        <span class="ruby-comment cmt"># we haven't initialized them as a key in body yet. </span>
+        <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">schema_less_attrs</span>
+          <span class="ruby-comment cmt"># pull out any schema less attrs from attrs and save for later assignment - this prevents</span>
+          <span class="ruby-comment cmt"># erroring because @attributes['body'] hasn't been defined yet</span>
+          <span class="ruby-identifier">attrs_to_assign_later</span> = {}
+          <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">attrs</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Hash</span>) <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-operator">!</span><span class="ruby-identifier">attrs</span>.<span class="ruby-identifier">blank?</span>
+             <span class="ruby-identifier">attrs</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">k</span>, <span class="ruby-identifier">v</span><span class="ruby-operator">|</span> 
+               <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">schema_less_attrs</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-identifier">k</span>)  
+                 <span class="ruby-identifier">attrs</span>.<span class="ruby-identifier">delete</span>(<span class="ruby-identifier">k</span>)
+                 <span class="ruby-identifier">attrs_to_assign_later</span>[<span class="ruby-identifier">k</span>] = <span class="ruby-identifier">v</span> 
+               <span class="ruby-keyword kw">end</span>
+             <span class="ruby-keyword kw">end</span>
+           <span class="ruby-keyword kw">end</span>
+        <span class="ruby-keyword kw">end</span>
+        
+        <span class="ruby-comment cmt"># need this to support UUIDs, regardless of whether schema less attrs exist</span>
+        <span class="ruby-comment cmt"># must let AR setup attributes before assigning to body.   </span>
+        <span class="ruby-keyword kw">super</span> 
+        <span class="ruby-keyword kw">unless</span> <span class="ruby-ivar">@attributes</span>[<span class="ruby-value str">'uuid'</span>]
+         <span class="ruby-ivar">@attributes</span>[<span class="ruby-value str">'uuid'</span>] = <span class="ruby-constant">UUID</span>.<span class="ruby-identifier">timestamp_create</span>.<span class="ruby-identifier">to_s</span>.<span class="ruby-identifier">gsub!</span>(<span class="ruby-regexp re">/-/</span>, <span class="ruby-value str">&quot;&quot;</span>)
+        <span class="ruby-keyword kw">end</span>   
+ 
+        <span class="ruby-comment cmt"># assign any attrs that should be in body that came in via the initialization</span>
+        <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">schema_less_attrs</span>
+          <span class="ruby-ivar">@attributes</span>[<span class="ruby-value str">'body'</span>] = <span class="ruby-constant">Hash</span>.<span class="ruby-identifier">new</span>  <span class="ruby-comment cmt"># so other attr can be key value pairs in body  </span>
+          <span class="ruby-comment cmt"># assign each schema less attr as a key/value in body, unless the key already exists as a real column</span>
+          <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">attrs_to_assign_later</span>.<span class="ruby-identifier">empty?</span>
+           <span class="ruby-identifier">attrs_to_assign_later</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">k</span>, <span class="ruby-identifier">v</span><span class="ruby-operator">|</span>
+             <span class="ruby-keyword kw">if</span> <span class="ruby-ivar">@attributes</span>.<span class="ruby-identifier">has_key?</span>(<span class="ruby-identifier">k</span>.<span class="ruby-identifier">to_s</span>)
+               <span class="ruby-identifier">raise</span> <span class="ruby-node">&quot;#{k} is already defined as a database column - skipping assignment to body\n$@&quot;</span>   
+             <span class="ruby-keyword kw">else</span>
+               <span class="ruby-ivar">@attributes</span>[<span class="ruby-value str">'body'</span>][<span class="ruby-identifier">k</span>.<span class="ruby-identifier">to_s</span>] = <span class="ruby-identifier">v</span> 
+             <span class="ruby-keyword kw">end</span>
+           <span class="ruby-keyword kw">end</span>  
+          <span class="ruby-keyword kw">end</span>
+        <span class="ruby-keyword kw">end</span>   
+      <span class="ruby-keyword kw">end</span></pre>
+</body>
+</html>

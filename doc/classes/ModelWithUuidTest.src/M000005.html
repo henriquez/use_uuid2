@@ -1,0 +1,31 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>test_schema_less_attrs_initialization_and_get (ModelWithUuidTest)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <link rel="stylesheet" href="../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body class="standalone-code">
+  <pre><span class="ruby-comment cmt"># File test/use_uuid_test.rb, line 33</span>
+  <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">test_schema_less_attrs_initialization_and_get</span>
+    <span class="ruby-comment cmt"># if initialized with no arguments, schema less attrs should exist as accessors but be nil</span>
+    <span class="ruby-identifier">entry</span> = <span class="ruby-constant">ModelWithUuid</span>.<span class="ruby-identifier">new</span>
+    <span class="ruby-identifier">assert</span> <span class="ruby-identifier">entry</span>.<span class="ruby-identifier">methods</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-value str">&quot;likes&quot;</span>)
+    <span class="ruby-identifier">assert</span> <span class="ruby-identifier">entry</span>.<span class="ruby-identifier">methods</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-value str">&quot;irrelevants&quot;</span>)
+    <span class="ruby-identifier">assert</span> <span class="ruby-operator">!</span><span class="ruby-identifier">entry</span>.<span class="ruby-identifier">likes</span>
+    <span class="ruby-comment cmt"># if init with arguments, non schema less attrs should not be included in body when set</span>
+    <span class="ruby-comment cmt"># and schema less attrs should be included in body</span>
+    <span class="ruby-identifier">entry</span> = <span class="ruby-constant">ModelWithUuid</span>.<span class="ruby-identifier">new</span> <span class="ruby-identifier">:url</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'yaya'</span>, <span class="ruby-identifier">:author_href</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">&quot;hayyman hey&quot;</span>, <span class="ruby-identifier">:likes</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-value str">'a'</span>, <span class="ruby-value str">'b'</span>], <span class="ruby-identifier">:irrelevants</span> =<span class="ruby-operator">&gt;</span> {<span class="ruby-identifier">:a</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">:b</span>, <span class="ruby-identifier">:c</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">:d</span>}
+    <span class="ruby-identifier">assert</span> <span class="ruby-operator">!</span><span class="ruby-identifier">entry</span>.<span class="ruby-identifier">body</span>.<span class="ruby-identifier">has_key?</span>(<span class="ruby-value str">'url'</span>)
+    <span class="ruby-identifier">assert</span> <span class="ruby-identifier">entry</span>.<span class="ruby-identifier">likes</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">entry</span>.<span class="ruby-identifier">body</span>[<span class="ruby-value str">'likes'</span>]
+    <span class="ruby-identifier">assert</span> <span class="ruby-identifier">entry</span>.<span class="ruby-identifier">likes</span> <span class="ruby-operator">==</span> [<span class="ruby-value str">'a'</span>, <span class="ruby-value str">'b'</span>] 
+    <span class="ruby-identifier">assert</span> <span class="ruby-identifier">entry</span>.<span class="ruby-identifier">irrelevants</span> <span class="ruby-operator">==</span>  {<span class="ruby-identifier">:a</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">:b</span>, <span class="ruby-identifier">:c</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">:d</span>}
+    <span class="ruby-identifier">entry</span> = <span class="ruby-constant">ModelWithUuid</span>.<span class="ruby-identifier">new</span> <span class="ruby-identifier">:likes</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword kw">nil</span>, <span class="ruby-identifier">:irrelevants</span> =<span class="ruby-operator">&gt;</span> {<span class="ruby-identifier">:a</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">:b</span>, <span class="ruby-identifier">:c</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">:d</span>}
+    <span class="ruby-identifier">assert</span> <span class="ruby-identifier">entry</span>.<span class="ruby-identifier">likes</span> <span class="ruby-operator">==</span> <span class="ruby-keyword kw">nil</span> 
+    <span class="ruby-identifier">assert</span> <span class="ruby-identifier">entry</span>.<span class="ruby-identifier">irrelevants</span> <span class="ruby-operator">==</span>  {<span class="ruby-identifier">:a</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">:b</span>, <span class="ruby-identifier">:c</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">:d</span>}
+    <span class="ruby-identifier">entry</span> = <span class="ruby-constant">ModelWithUuid</span>.<span class="ruby-identifier">new</span> <span class="ruby-identifier">:url</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword kw">nil</span>, <span class="ruby-identifier">:likes</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">&quot;what?&quot;</span>
+    <span class="ruby-identifier">assert</span> <span class="ruby-identifier">entry</span>.<span class="ruby-identifier">likes</span> <span class="ruby-operator">==</span> <span class="ruby-value str">&quot;what?&quot;</span>
+  <span class="ruby-keyword kw">end</span></pre>
+</body>
+</html>

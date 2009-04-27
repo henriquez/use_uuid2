@@ -1,0 +1,249 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>File: README [RDoc Documentation]</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Script-Type" content="text/javascript" />
+  <link rel="stylesheet" href=".././rdoc-style.css" type="text/css" media="screen" />
+  <script type="text/javascript">
+  // <![CDATA[
+
+  function popupCode( url ) {
+    window.open(url, "Code", "resizable=yes,scrollbars=yes,toolbar=no,status=no,height=150,width=400")
+  }
+
+  function toggleCode( id ) {
+    if ( document.getElementById )
+      elem = document.getElementById( id );
+    else if ( document.all )
+      elem = eval( "document.all." + id );
+    else
+      return false;
+
+    elemStyle = elem.style;
+
+    if ( elemStyle.display != "block" ) {
+      elemStyle.display = "block"
+    } else {
+      elemStyle.display = "none"
+    }
+
+    return true;
+  }
+
+  // Make codeblocks hidden by default
+  document.writeln( "<style type=\"text/css\">div.method-source-code { display: none }<\/style>" )
+
+  // ]]>
+  </script>
+
+</head>
+<body>
+
+
+  <div id="fileHeader">
+    <h1>README</h1>
+    <table class="header-table">
+    <tr class="top-aligned-row">
+      <td><strong>Path:</strong></td>
+      <td>README
+
+      </td>
+    </tr>
+    <tr class="top-aligned-row">
+      <td><strong>Last Update:</strong></td>
+      <td>Mon Apr 27 10:26:23 -0700 2009</td>
+    </tr>
+    </table>
+  </div>
+  <!-- banner header -->
+
+  <div id="bodyContent">
+
+  <div id="contextContent">
+
+    <div id="description">
+      <h1>UseUuid</h1>
+<h2>Overview</h2>
+<p>
+UseUuid is a Rails plugin that facilitates part of making a rails
+application distributed across multiple databases/machines. This plugin
+gives Rails models a uuid attribute and a body attribute with a
+user-specified number of accessor methods.
+</p>
+<p>
+The uuid attribute is useful to identify objects across multiple databases,
+regardless of when and where they were created. It allows multiple
+processes to create and share the same object types even when operating on
+different databases and machines. The uuid attribute coexists with the
+normal rails &#8216;id&#8217; attribute, allowing local db optimizations if
+necessary by preserving the efficiencies of InnoDB&#8217;s sequential
+primary key based layout. This plugin overwrites obj.find so that the uuid
+is used instead of &#8216;id&#8217; when retrieving objects. Also,
+initialize is overwritten so &#8216;uuid&#8217; is set at object creation.
+Otherwise both find and new work as normal.
+</p>
+<p>
+The body attribute is a text blob with a user specified set of accessors.
+This allows the developer to implement a schema-less model. Schema-less
+models are useful when you have multiple databases with many rows and want
+to change the schema. Changing the schema, particularly when it impacts an
+index, can take a long time and impacts database performance. Its also a
+hassle for the developer to migrate multiple databases. UseUuid allows the
+developer to make a schema change in one place and have it impact all
+processes and all databases. Obviously you must be sharing the schema
+definitions across processes, and the processes will need to be restarted
+for the change to take effect. Note that putting an attribute into body
+means the normal database join tables and indexes will no longer work for
+that attribute. In a distributed shared-nothing database environment,
+particularly a sharded one, these don&#8217;t work anyway, so you must have
+an alternate way of finding objects by attribute, such as table based
+indexes or denormalization. See <a
+href="http://bret.appspot.com/entry/how-friendfeed-uses-mysql">bret.appspot.com/entry/how-friendfeed-uses-mysql</a>
+for a discussion of schema-less databases.
+</p>
+<h2>Installation and Usage</h2>
+<h3>Installation</h3>
+<ol>
+<li>Install the uuidtools gem
+
+</li>
+</ol>
+<pre>
+  sudo gem install uuidtools
+</pre>
+<ol>
+<li>Migrations/schemas must have a uuid column and and a body column specified
+like the following. The uuid column is required. The body column is only
+required if you are using schema less attributes. The uuid must be 32
+characters. The dashes are stripped from the UUIDs as they have no
+information value. The body may be any size you want.
+
+<pre>
+             create_table &quot;model_with_uuids&quot;, :force =&gt; true do |t|
+               t.string   &quot;uuid&quot;,       :limit =&gt; 32
+               t.string   &quot;url&quot;
+               t.text     &quot;body&quot;,       :limit =&gt; 10.megabytes
+               t.datetime &quot;created_at&quot;
+               t.datetime &quot;updated_at&quot;
+             end
+</pre>
+</li>
+<li>Install the use_uuid plugin. Schema definitions and probably some model
+code will have to be shared between processes.
+
+</li>
+</ol>
+<h3>Usage</h3>
+<h4>UUID support</h4>
+<p>
+To specify which models will use_uuid:
+</p>
+<pre>
+        class ModelWithUuid &lt; ActiveRecord::Base
+          use_uuid
+          has_many :other_models  # uuid will be used as the primary key instead of 'id' for all associations
+        end
+
+  m = ModelWithUuid.new :url =&gt; 'example.com'
+  m.uuid                                        #=&gt; '011784fe143911de8948001aa018681c'
+  m.url                                         #=&gt; 'example.com'
+  m.save!
+
+  # find() now uses the uuid column to ensure portability across databases
+  ModelWithUuid.find('011784fe143911de8948001aa018681c') #=&gt; returns the object just saved.
+  ModelWithUuid.find(1)                                  #=&gt; raises StandardError
+  ModelWithUuid.find_by_id(1)                            #=&gt; returns the row saved earlier.
+</pre>
+<h4>Schema less attributes support</h4>
+<p>
+To specify which models will use_uuid:
+</p>
+<pre>
+  class ModelWithUuid &lt; ActiveRecord::Base
+          use_uuid :schema_less_attrs =&gt; [:entries, :likes]
+
+  end
+</pre>
+<p>
+The hash following use_uuid is optional. If omitted, use_uuid will only add
+UUIDs to your model. If you specify an array of symbols, the symbols will
+become keys to a hash that is stored in the body column. The hash is
+serialized into the body column. The attributes may be accessed and set
+like normal rails model attributes, for instance:
+</p>
+<pre>
+  user = User.new
+  user.entries = ['happy', 'not happy']
+  user.save!  # serialized into body
+
+  user = User.find(:all).first
+  user.entries #=&gt; ['happy', 'not happy']  # retrieved from body
+</pre>
+<h4>Code Organization</h4>
+<p>
+If you need Uuids you probably have a distributed environment and/or have
+multiple ruby programs/code bases that need to use the same schema
+definitions. Putting &#8216;use_uuid&#8217; into the same models in each
+code base is not DRY, so put them into the shared code base instead, then
+include the shared code base into each model. One way to do that is to put
+your shared model code (for instance, associations and shared methods) into
+plugin form. Then create a plugin directory that is symlinked under lib/
+from each project so all projects share the same plugins and thus all
+models share the same schema and associations.
+</p>
+<h2>Testing</h2>
+<p>
+Use_uuid has been tested with Rails 2.2.2 and Ruby 1.8.7. Compatibility
+with other versions is unknown.
+</p>
+<h2>Technical Notes</h2>
+<p>
+UseUuid uses rails&#8217; &#8216;set_primary_key&#8217; to change the
+primary key for the model from &#8216;id&#8217; to &#8216;uuid&#8217;. This
+does not affect migrations or schemas, so they will continue to make
+&#8216;id&#8217; the default auto incrementing integer primary key column
+in the database. Since the &#8216;id&#8217; column will be different on
+different databases for the same object, we can&#8217;t use it for finding
+objects, but it may be used if you want to perform local optimizations. If
+you&#8217;re using MySQL/InnoDB, you don&#8217;t want the uuid column to be
+the database primary key, because InnoDB performs writes on disk based on
+primary key, and since uuids are non sequential, you&#8217;ll be writing
+disk non-sequentially, which is slow. For this reason UseUuid doesn&#8217;t
+interfere with or rename the &#8216;id&#8217; column.
+</p>
+<p>
+Its probably a good idea to index the uuid column in models that use_uuid.
+</p>
+<p>
+Copyright &#169; 2009 Logan Henriquez, released under the MIT license
+</p>
+
+    </div>
+
+   </div>
+
+
+  </div>
+
+    <!-- if includes -->
+
+    <div id="section">
+
+
+
+
+    <!-- if method_list -->
+
+
+
+
+  </div>
+
+<div id="validator-badges">
+  <p><small><a href="http://validator.w3.org/check/referer">[Validate]</a></small></p>
+</div>
+
+</body>
+</html>

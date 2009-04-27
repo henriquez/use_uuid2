@@ -1,0 +1,126 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>File: M000004.html [RDoc Documentation]</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Script-Type" content="text/javascript" />
+  <link rel="stylesheet" href="../../../.././rdoc-style.css" type="text/css" media="screen" />
+  <script type="text/javascript">
+  // <![CDATA[
+
+  function popupCode( url ) {
+    window.open(url, "Code", "resizable=yes,scrollbars=yes,toolbar=no,status=no,height=150,width=400")
+  }
+
+  function toggleCode( id ) {
+    if ( document.getElementById )
+      elem = document.getElementById( id );
+    else if ( document.all )
+      elem = eval( "document.all." + id );
+    else
+      return false;
+
+    elemStyle = elem.style;
+
+    if ( elemStyle.display != "block" ) {
+      elemStyle.display = "block"
+    } else {
+      elemStyle.display = "none"
+    }
+
+    return true;
+  }
+
+  // Make codeblocks hidden by default
+  document.writeln( "<style type=\"text/css\">div.method-source-code { display: none }<\/style>" )
+
+  // ]]>
+  </script>
+
+</head>
+<body>
+
+
+  <div id="fileHeader">
+    <h1>M000004.html</h1>
+    <table class="header-table">
+    <tr class="top-aligned-row">
+      <td><strong>Path:</strong></td>
+      <td>doc/classes/ModelWithUuidTest.src/M000004.html
+
+      </td>
+    </tr>
+    <tr class="top-aligned-row">
+      <td><strong>Last Update:</strong></td>
+      <td>Mon Apr 27 10:13:20 -0700 2009</td>
+    </tr>
+    </table>
+  </div>
+  <!-- banner header -->
+
+  <div id="bodyContent">
+
+  <div id="contextContent">
+
+    <div id="description">
+      <p>
+<!DOCTYPE html PUBLIC &#8220;-//W3C//DTD XHTML 1.0 Strict//EN&#8220;
+&#8220;<a
+href="http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd</a>&#8220;>
+<html xmlns=&#8220;<a
+href="http://www.w3.org/1999/xhtml">www.w3.org/1999/xhtml</a>&#8220;
+xml:lang=&#8220;en&#8221; lang=&#8220;en&#8221;> <head>
+</p>
+<pre>
+  &lt;title&gt;test_use_uuid_find (ModelWithUuidTest)&lt;/title&gt;
+  &lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html; charset=utf-8&quot; /&gt;
+  &lt;link rel=&quot;stylesheet&quot; href=&quot;../.././rdoc-style.css&quot; type=&quot;text/css&quot; media=&quot;screen&quot; /&gt;
+</pre>
+<p>
+</head> <body class=&#8220;standalone-code&#8221;>
+</p>
+<pre>
+  &lt;pre&gt;&lt;span class=&quot;ruby-comment cmt&quot;&gt;# File test/use_uuid_test.rb, line 22&lt;/span&gt;
+  &lt;span class=&quot;ruby-keyword kw&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;ruby-identifier&quot;&gt;test_use_uuid_find&lt;/span&gt;
+    &lt;span class=&quot;ruby-identifier&quot;&gt;assert_equal&lt;/span&gt; &lt;span class=&quot;ruby-value str&quot;&gt;&amp;quot;feedproxy.google.com/techcrunch&amp;quot;&lt;/span&gt;, &lt;span class=&quot;ruby-constant&quot;&gt;ModelWithUuid&lt;/span&gt;.&lt;span class=&quot;ruby-identifier&quot;&gt;find&lt;/span&gt;(&lt;span class=&quot;ruby-value str&quot;&gt;&amp;quot;123456uiyhgtt&amp;quot;&lt;/span&gt;).&lt;span class=&quot;ruby-identifier&quot;&gt;url&lt;/span&gt;
+    &lt;span class=&quot;ruby-comment cmt&quot;&gt;# also test we didn't break the normal finders&lt;/span&gt;
+    &lt;span class=&quot;ruby-identifier&quot;&gt;assert_raise&lt;/span&gt; &lt;span class=&quot;ruby-constant&quot;&gt;RuntimeError&lt;/span&gt; &lt;span class=&quot;ruby-keyword kw&quot;&gt;do&lt;/span&gt;
+      &lt;span class=&quot;ruby-constant&quot;&gt;ModelWithUuid&lt;/span&gt;.&lt;span class=&quot;ruby-identifier&quot;&gt;find&lt;/span&gt;(&lt;span class=&quot;ruby-value&quot;&gt;1&lt;/span&gt;)
+    &lt;span class=&quot;ruby-keyword kw&quot;&gt;end&lt;/span&gt;
+    &lt;span class=&quot;ruby-identifier&quot;&gt;assert_equal&lt;/span&gt; &lt;span class=&quot;ruby-value str&quot;&gt;&amp;quot;www.henriquez.net&amp;quot;&lt;/span&gt;, &lt;span class=&quot;ruby-constant&quot;&gt;ModelWithUuid&lt;/span&gt;.&lt;span class=&quot;ruby-identifier&quot;&gt;find&lt;/span&gt;(&lt;span class=&quot;ruby-identifier&quot;&gt;:first&lt;/span&gt;, &lt;span class=&quot;ruby-identifier&quot;&gt;:conditions&lt;/span&gt; =&lt;span class=&quot;ruby-operator&quot;&gt;&amp;gt;&lt;/span&gt; [&lt;span class=&quot;ruby-value str&quot;&gt;'uuid = ?'&lt;/span&gt;, &lt;span class=&quot;ruby-value str&quot;&gt;'234cfwe234'&lt;/span&gt;]).&lt;span class=&quot;ruby-identifier&quot;&gt;url&lt;/span&gt;
+    &lt;span class=&quot;ruby-identifier&quot;&gt;assert_equal&lt;/span&gt; &lt;span class=&quot;ruby-value str&quot;&gt;&amp;quot;www.henriquez.net&amp;quot;&lt;/span&gt;, &lt;span class=&quot;ruby-constant&quot;&gt;ModelWithUuid&lt;/span&gt;.&lt;span class=&quot;ruby-identifier&quot;&gt;find_by_uuid&lt;/span&gt;(&lt;span class=&quot;ruby-value str&quot;&gt;'234cfwe234'&lt;/span&gt;).&lt;span class=&quot;ruby-identifier&quot;&gt;url&lt;/span&gt;
+    &lt;span class=&quot;ruby-identifier&quot;&gt;assert_equal&lt;/span&gt; &lt;span class=&quot;ruby-value str&quot;&gt;'234cfwe234'&lt;/span&gt;, &lt;span class=&quot;ruby-constant&quot;&gt;ModelWithUuid&lt;/span&gt;.&lt;span class=&quot;ruby-identifier&quot;&gt;find_by_url&lt;/span&gt;(&lt;span class=&quot;ruby-value str&quot;&gt;&amp;quot;www.henriquez.net&amp;quot;&lt;/span&gt;).&lt;span class=&quot;ruby-identifier&quot;&gt;uuid&lt;/span&gt;
+  &lt;span class=&quot;ruby-keyword kw&quot;&gt;end&lt;/span&gt;&lt;/pre&gt;
+</pre>
+<p>
+</body> </html>
+</p>
+
+    </div>
+
+   </div>
+
+
+  </div>
+
+    <!-- if includes -->
+
+    <div id="section">
+
+
+
+
+    <!-- if method_list -->
+
+
+
+
+  </div>
+
+<div id="validator-badges">
+  <p><small><a href="http://validator.w3.org/check/referer">[Validate]</a></small></p>
+</div>
+
+</body>
+</html>

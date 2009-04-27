@@ -1,0 +1,22 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>test_use_uuid_find (ModelWithUuidTest)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <link rel="stylesheet" href="../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body class="standalone-code">
+  <pre><span class="ruby-comment cmt"># File test/use_uuid_test.rb, line 22</span>
+  <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">test_use_uuid_find</span>
+    <span class="ruby-identifier">assert_equal</span> <span class="ruby-value str">&quot;feedproxy.google.com/techcrunch&quot;</span>, <span class="ruby-constant">ModelWithUuid</span>.<span class="ruby-identifier">find</span>(<span class="ruby-value str">&quot;123456uiyhgtt&quot;</span>).<span class="ruby-identifier">url</span>
+    <span class="ruby-comment cmt"># also test we didn't break the normal finders</span>
+    <span class="ruby-identifier">assert_raise</span> <span class="ruby-constant">RuntimeError</span> <span class="ruby-keyword kw">do</span>
+      <span class="ruby-constant">ModelWithUuid</span>.<span class="ruby-identifier">find</span>(<span class="ruby-value">1</span>)
+    <span class="ruby-keyword kw">end</span>  
+    <span class="ruby-identifier">assert_equal</span> <span class="ruby-value str">&quot;www.henriquez.net&quot;</span>, <span class="ruby-constant">ModelWithUuid</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">:first</span>, <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-value str">'uuid = ?'</span>, <span class="ruby-value str">'234cfwe234'</span>]).<span class="ruby-identifier">url</span>
+    <span class="ruby-identifier">assert_equal</span> <span class="ruby-value str">&quot;www.henriquez.net&quot;</span>, <span class="ruby-constant">ModelWithUuid</span>.<span class="ruby-identifier">find_by_uuid</span>(<span class="ruby-value str">'234cfwe234'</span>).<span class="ruby-identifier">url</span>
+    <span class="ruby-identifier">assert_equal</span> <span class="ruby-value str">'234cfwe234'</span>, <span class="ruby-constant">ModelWithUuid</span>.<span class="ruby-identifier">find_by_url</span>(<span class="ruby-value str">&quot;www.henriquez.net&quot;</span>).<span class="ruby-identifier">uuid</span>
+  <span class="ruby-keyword kw">end</span></pre>
+</body>
+</html>

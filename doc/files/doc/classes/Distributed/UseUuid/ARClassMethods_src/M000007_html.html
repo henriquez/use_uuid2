@@ -1,0 +1,149 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>File: M000007.html [RDoc Documentation]</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Script-Type" content="text/javascript" />
+  <link rel="stylesheet" href="../../../../../.././rdoc-style.css" type="text/css" media="screen" />
+  <script type="text/javascript">
+  // <![CDATA[
+
+  function popupCode( url ) {
+    window.open(url, "Code", "resizable=yes,scrollbars=yes,toolbar=no,status=no,height=150,width=400")
+  }
+
+  function toggleCode( id ) {
+    if ( document.getElementById )
+      elem = document.getElementById( id );
+    else if ( document.all )
+      elem = eval( "document.all." + id );
+    else
+      return false;
+
+    elemStyle = elem.style;
+
+    if ( elemStyle.display != "block" ) {
+      elemStyle.display = "block"
+    } else {
+      elemStyle.display = "none"
+    }
+
+    return true;
+  }
+
+  // Make codeblocks hidden by default
+  document.writeln( "<style type=\"text/css\">div.method-source-code { display: none }<\/style>" )
+
+  // ]]>
+  </script>
+
+</head>
+<body>
+
+
+  <div id="fileHeader">
+    <h1>M000007.html</h1>
+    <table class="header-table">
+    <tr class="top-aligned-row">
+      <td><strong>Path:</strong></td>
+      <td>doc/classes/Distributed/UseUuid/ARClassMethods.src/M000007.html
+
+      </td>
+    </tr>
+    <tr class="top-aligned-row">
+      <td><strong>Last Update:</strong></td>
+      <td>Mon Apr 27 10:13:20 -0700 2009</td>
+    </tr>
+    </table>
+  </div>
+  <!-- banner header -->
+
+  <div id="bodyContent">
+
+  <div id="contextContent">
+
+    <div id="description">
+      <p>
+<!DOCTYPE html PUBLIC &#8220;-//W3C//DTD XHTML 1.0 Strict//EN&#8220;
+&#8220;<a
+href="http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd</a>&#8220;>
+<html xmlns=&#8220;<a
+href="http://www.w3.org/1999/xhtml">www.w3.org/1999/xhtml</a>&#8220;
+xml:lang=&#8220;en&#8221; lang=&#8220;en&#8221;> <head>
+</p>
+<pre>
+  &lt;title&gt;use_uuid (Distributed::UseUuid::ARClassMethods)&lt;/title&gt;
+  &lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html; charset=utf-8&quot; /&gt;
+  &lt;link rel=&quot;stylesheet&quot; href=&quot;../../../.././rdoc-style.css&quot; type=&quot;text/css&quot; media=&quot;screen&quot; /&gt;
+</pre>
+<p>
+</head> <body class=&#8220;standalone-code&#8221;>
+</p>
+<pre>
+  &lt;pre&gt;&lt;span class=&quot;ruby-comment cmt&quot;&gt;# File lib/use_uuid.rb, line 28&lt;/span&gt;
+       &lt;span class=&quot;ruby-keyword kw&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;ruby-identifier&quot;&gt;use_uuid&lt;/span&gt;(&lt;span class=&quot;ruby-identifier&quot;&gt;options&lt;/span&gt; = {})
+         &lt;span class=&quot;ruby-comment cmt&quot;&gt;# don't allow multiple calls&lt;/span&gt;
+         &lt;span class=&quot;ruby-keyword kw&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;ruby-keyword kw&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;ruby-keyword kw&quot;&gt;self&lt;/span&gt;.&lt;span class=&quot;ruby-identifier&quot;&gt;included_modules&lt;/span&gt;.&lt;span class=&quot;ruby-identifier&quot;&gt;include?&lt;/span&gt;(&lt;span class=&quot;ruby-constant&quot;&gt;Distributed&lt;/span&gt;&lt;span class=&quot;ruby-operator&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;ruby-constant&quot;&gt;UseUuid&lt;/span&gt;&lt;span class=&quot;ruby-operator&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;ruby-constant&quot;&gt;InstanceMethods&lt;/span&gt;)
+         &lt;span class=&quot;ruby-identifier&quot;&gt;include&lt;/span&gt; &lt;span class=&quot;ruby-constant&quot;&gt;Distributed&lt;/span&gt;&lt;span class=&quot;ruby-operator&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;ruby-constant&quot;&gt;UseUuid&lt;/span&gt;&lt;span class=&quot;ruby-operator&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;ruby-constant&quot;&gt;InstanceMethods&lt;/span&gt;
+         &lt;span class=&quot;ruby-identifier&quot;&gt;extend&lt;/span&gt; &lt;span class=&quot;ruby-constant&quot;&gt;Distributed&lt;/span&gt;&lt;span class=&quot;ruby-operator&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;ruby-constant&quot;&gt;UseUuid&lt;/span&gt;&lt;span class=&quot;ruby-operator&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;ruby-constant&quot;&gt;ModelClassMethods&lt;/span&gt;
+         &lt;span class=&quot;ruby-comment cmt&quot;&gt;# unless specified in arguments there are no schema less attrs created&lt;/span&gt;
+         &lt;span class=&quot;ruby-identifier&quot;&gt;options&lt;/span&gt;[&lt;span class=&quot;ruby-identifier&quot;&gt;:schema_less_attrs&lt;/span&gt;] = &lt;span class=&quot;ruby-keyword kw&quot;&gt;nil&lt;/span&gt; &lt;span class=&quot;ruby-keyword kw&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;ruby-identifier&quot;&gt;options&lt;/span&gt;[&lt;span class=&quot;ruby-identifier&quot;&gt;:schema_less_attrs&lt;/span&gt;] &lt;span class=&quot;ruby-operator&quot;&gt;==&lt;/span&gt; []
+
+         &lt;span class=&quot;ruby-comment cmt&quot;&gt;# enable shema_less_attrs to be accessible in instance methods &lt;/span&gt;
+         &lt;span class=&quot;ruby-identifier&quot;&gt;class_inheritable_reader&lt;/span&gt; &lt;span class=&quot;ruby-identifier&quot;&gt;:schema_less_attrs&lt;/span&gt;
+         &lt;span class=&quot;ruby-identifier&quot;&gt;write_inheritable_attribute&lt;/span&gt; &lt;span class=&quot;ruby-identifier&quot;&gt;:schema_less_attrs&lt;/span&gt;, &lt;span class=&quot;ruby-identifier&quot;&gt;options&lt;/span&gt;[&lt;span class=&quot;ruby-identifier&quot;&gt;:schema_less_attrs&lt;/span&gt;]
+
+         &lt;span class=&quot;ruby-comment cmt&quot;&gt;# if schema less attrs specified, there must be a 'body' attribute, and attributes&lt;/span&gt;
+         &lt;span class=&quot;ruby-comment cmt&quot;&gt;# must be specified as symbols. &lt;/span&gt;
+         &lt;span class=&quot;ruby-keyword kw&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;ruby-identifier&quot;&gt;options&lt;/span&gt;[&lt;span class=&quot;ruby-identifier&quot;&gt;:schema_less_attrs&lt;/span&gt;]
+           &lt;span class=&quot;ruby-identifier&quot;&gt;raise&lt;/span&gt; &lt;span class=&quot;ruby-constant&quot;&gt;NoBodyAttributeError&lt;/span&gt; &lt;span class=&quot;ruby-keyword kw&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;ruby-operator&quot;&gt;!&lt;/span&gt;&lt;span class=&quot;ruby-keyword kw&quot;&gt;self&lt;/span&gt;.&lt;span class=&quot;ruby-identifier&quot;&gt;new&lt;/span&gt;.&lt;span class=&quot;ruby-identifier&quot;&gt;attributes&lt;/span&gt;.&lt;span class=&quot;ruby-identifier&quot;&gt;include?&lt;/span&gt;(&lt;span class=&quot;ruby-value str&quot;&gt;'body'&lt;/span&gt;)
+           &lt;span class=&quot;ruby-identifier&quot;&gt;raise&lt;/span&gt; &lt;span class=&quot;ruby-constant&quot;&gt;AttrsNotSymbols&lt;/span&gt; &lt;span class=&quot;ruby-keyword kw&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;ruby-identifier&quot;&gt;options&lt;/span&gt;[&lt;span class=&quot;ruby-identifier&quot;&gt;:schema_less_attrs&lt;/span&gt;].&lt;span class=&quot;ruby-identifier&quot;&gt;any?&lt;/span&gt; {&lt;span class=&quot;ruby-operator&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;ruby-identifier&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;ruby-operator&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;ruby-operator&quot;&gt;!&lt;/span&gt;&lt;span class=&quot;ruby-identifier&quot;&gt;a&lt;/span&gt;.&lt;span class=&quot;ruby-identifier&quot;&gt;is_a?&lt;/span&gt; &lt;span class=&quot;ruby-constant&quot;&gt;Symbol&lt;/span&gt; }
+         &lt;span class=&quot;ruby-keyword kw&quot;&gt;end&lt;/span&gt;
+         &lt;span class=&quot;ruby-comment cmt&quot;&gt;# 'id' is still created by schemas and migrations but not used for foreign keys or find&lt;/span&gt;
+         &lt;span class=&quot;ruby-identifier&quot;&gt;set_primary_key&lt;/span&gt; &lt;span class=&quot;ruby-value str&quot;&gt;&amp;quot;uuid&amp;quot;&lt;/span&gt;
+         &lt;span class=&quot;ruby-identifier&quot;&gt;serialize&lt;/span&gt; &lt;span class=&quot;ruby-identifier&quot;&gt;:body&lt;/span&gt; &lt;span class=&quot;ruby-keyword kw&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;ruby-identifier&quot;&gt;options&lt;/span&gt;[&lt;span class=&quot;ruby-identifier&quot;&gt;:schema_less_attrs&lt;/span&gt;] &lt;span class=&quot;ruby-comment cmt&quot;&gt;# schema less attrs are stored here&lt;/span&gt;
+
+         &lt;span class=&quot;ruby-keyword kw&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;ruby-identifier&quot;&gt;options&lt;/span&gt;[&lt;span class=&quot;ruby-identifier&quot;&gt;:schema_less_attrs&lt;/span&gt;]
+           &lt;span class=&quot;ruby-comment cmt&quot;&gt;# create the getter/setters for each schema less attribute&lt;/span&gt;
+           &lt;span class=&quot;ruby-identifier&quot;&gt;code&lt;/span&gt; = &lt;span class=&quot;ruby-value str&quot;&gt;&amp;quot;&amp;quot;&lt;/span&gt;
+           &lt;span class=&quot;ruby-identifier&quot;&gt;options&lt;/span&gt;[&lt;span class=&quot;ruby-identifier&quot;&gt;:schema_less_attrs&lt;/span&gt;].&lt;span class=&quot;ruby-identifier&quot;&gt;each&lt;/span&gt; &lt;span class=&quot;ruby-keyword kw&quot;&gt;do&lt;/span&gt; &lt;span class=&quot;ruby-operator&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;ruby-identifier&quot;&gt;k&lt;/span&gt;&lt;span class=&quot;ruby-operator&quot;&gt;|&lt;/span&gt;
+             &lt;span class=&quot;ruby-identifier&quot;&gt;code&lt;/span&gt; &lt;span class=&quot;ruby-operator&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt;  &lt;span class=&quot;ruby-node&quot;&gt;&amp;quot;def #{k}; self.body[#{k.to_s.inspect}]; end\n&amp;quot;&lt;/span&gt;
+             &lt;span class=&quot;ruby-identifier&quot;&gt;code&lt;/span&gt; &lt;span class=&quot;ruby-operator&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt;  &lt;span class=&quot;ruby-node&quot;&gt;&amp;quot;def #{k}=(value); self.body[#{k.to_s.inspect}] = value; end\n&amp;quot;&lt;/span&gt;
+           &lt;span class=&quot;ruby-keyword kw&quot;&gt;end&lt;/span&gt;
+           &lt;span class=&quot;ruby-identifier&quot;&gt;class_eval&lt;/span&gt; &lt;span class=&quot;ruby-identifier&quot;&gt;code&lt;/span&gt;
+         &lt;span class=&quot;ruby-keyword kw&quot;&gt;end&lt;/span&gt;
+
+       &lt;span class=&quot;ruby-keyword kw&quot;&gt;end&lt;/span&gt;&lt;/pre&gt;
+</pre>
+<p>
+</body> </html>
+</p>
+
+    </div>
+
+   </div>
+
+
+  </div>
+
+    <!-- if includes -->
+
+    <div id="section">
+
+
+
+
+    <!-- if method_list -->
+
+
+
+
+  </div>
+
+<div id="validator-badges">
+  <p><small><a href="http://validator.w3.org/check/referer">[Validate]</a></small></p>
+</div>
+
+</body>
+</html>

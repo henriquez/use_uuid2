@@ -63,9 +63,10 @@ module Distributed
      
      module ModelClassMethods  
 
-       # Makes sure programmers don't perform find using integer primary key - 
-       # raises error if they do.  If you need a performance enhancement
-       # that requires using integer ids just use find_by_id() 
+       # Forces find() to use UUIDs instead of integer keys - raises error if integer
+       # primary key is given such as in ClassName.find(2). If you need a performance enhancement
+       # that requires using integer ids just use find_by_id().  Otherwise works identically
+       # to the rails find method. 
        def find(*args)
          if args[0].is_a?(Integer)  
            # model classes that include UseUUID must not do find on integer primary key
@@ -81,14 +82,11 @@ module Distributed
    
     module InstanceMethods
       
-      # set 'uuid' attribute upon object creation if a uuid is not already present.
-      # For object creation in the R2 tier, it will always assign a uuid.  For object
-      # creation of Groups, Users, News, and Sources in the B1 tier, the controller
-      # will recieve the uuid assigned by the R2 tier in params and in the arguments
-      # to new, so will not assign a new uuid.
-      # Override this method in each model if other attributes need to be set upon
-      # initialization. Note that initialize is an instance method of the class its
-      # included into.
+      
+      # Sets the 'uuid' attribute upon object creation if a uuid is not already present. 
+      # Assigns value to schema less attributes if they are specified in the arguments.  Otherwise
+      # works just like Rails new().  Schema less attributes will return a nil value if not specified
+      # on object creation.
       def initialize(attrs = {}, &block) 
         # let user specify schema less attrs in the attrs hash just like normal attrs, even though  
         # we haven't initialized them as a key in body yet. 
