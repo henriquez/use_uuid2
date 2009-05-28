@@ -50,6 +50,27 @@ class ModelWithUuidTest < ActiveRecordTest
     assert entry.likes == "what?"
   end
   
+  # attrs are strings when come from params but should work the same as symbols
+  def test_schema_less_attrs_as_strings
+    # if initialized with no arguments, schema less attrs should exist as accessors but be nil
+    entry = ModelWithUuid.new
+    assert entry.methods.include?("likes")
+    assert entry.methods.include?("irrelevants")
+    assert !entry.likes
+    # if init with arguments, non schema less attrs should not be included in body when set
+    # and schema less attrs should be included in body
+    entry = ModelWithUuid.new 'url' => 'yaya', "author_href" => "hayyman hey", "likes" => ['a', 'b'], "irrelevants" => {:a => :b, :c => :d}
+    assert !entry.body.has_key?('url')
+    assert entry.likes == entry.body['likes']
+    assert entry.likes == ['a', 'b'] 
+    assert entry.irrelevants ==  {:a => :b, :c => :d}
+    entry = ModelWithUuid.new :likes => nil, :irrelevants => {:a => :b, :c => :d}
+    assert entry.likes == nil 
+    assert entry.irrelevants ==  {:a => :b, :c => :d}
+    entry = ModelWithUuid.new :url => nil, :likes => "what?"
+    assert entry.likes == "what?"
+  end
+  
   def test_schema_less_attrs_set_db
     # test setter and getters can be saved to the db and retrieved.
     entry = ModelWithUuid.new :url => 'lkjlkjlkj'

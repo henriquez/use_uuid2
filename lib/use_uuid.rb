@@ -37,11 +37,9 @@ module Distributed
          class_inheritable_reader :schema_less_attrs
          write_inheritable_attribute :schema_less_attrs, options[:schema_less_attrs] 
          
-         # if schema less attrs specified, there must be a 'body' attribute, and attributes
-         # must be specified as symbols. 
+         # if schema less attrs specified, there must be a 'body' attribute.
          if options[:schema_less_attrs]
            raise NoBodyAttributeError if !self.new.attributes.include?('body')
-           raise AttrsNotSymbols if options[:schema_less_attrs].any? {|a| !a.is_a? Symbol }
          end     
          # 'id' is still created by schemas and migrations but not used for foreign keys or find
          set_primary_key "uuid" 
@@ -63,10 +61,9 @@ module Distributed
      
      module ModelClassMethods  
 
-       # Forces find() to use UUIDs instead of integer keys - raises error if integer
-       # primary key is given such as in ClassName.find(2). If you need a performance enhancement
-       # that requires using integer ids just use find_by_id().  Otherwise works identically
-       # to the rails find method. 
+       # Makes sure programmers don't perform find using integer primary key - 
+       # raises error if they do.  If you need a performance enhancement
+       # that requires using integer ids just use find_by_id() 
        def find(*args)
          if args[0].is_a?(Integer)  
            # model classes that include UseUUID must not do find on integer primary key
@@ -82,15 +79,23 @@ module Distributed
    
     module InstanceMethods
       
-      
-      # Sets the 'uuid' attribute upon object creation if a uuid is not already present. 
-      # Assigns value to schema less attributes if they are specified in the arguments.  Otherwise
-      # works just like Rails new().  Schema less attributes will return a nil value if not specified
-      # on object creation.
+      # set 'uuid' attribute upon object creation if a uuid is not already present.
+      # For object creation in the R2 tier, it will always assign a uuid.  For object
+      # creation of Groups, Users, News, and Sources in the B1 tier, the controller
+      # will recieve the uuid assigned by the R2 tier in params and in the arguments
+      # to new, so will not assign a new uuid.
+      # Override this method in each model if other attributes need to be set upon
+      # initialization. Note that initialize is an instance method of the class its
+      # included into.
       def initialize(attrs = {}, &block) 
         # let user specify schema less attrs in the attrs hash just like normal attrs, even though  
         # we haven't initialized them as a key in body yet. 
+        # attr keys may be symbols or strings so normalize to strings for comparison
+        attrs = attrs.inject({}) {|memo,(k,v)| memo[k.to_s] = v; memo }
+        # to the schema less attrs where we do  the same.
         if schema_less_attrs
+          # schema_less_attrs may be symbols or strings, attrs keys are normalized to strings so convert to strings to do comparison
+          schema_less_attrs.collect! {|a| a.to_s }        
           # pull out any schema less attrs from attrs and save for later assignment - this prevents
           # erroring because @attributes['body'] hasn't been defined yet
           attrs_to_assign_later = {}
@@ -110,17 +115,16 @@ module Distributed
         unless @attributes['uuid']
          @attributes['uuid'] = UUID.timestamp_create.to_s.gsub!(/-/, "")
         end   
- 
         # assign any attrs that should be in body that came in via the initialization
         if schema_less_attrs
           @attributes['body'] = Hash.new  # so other attr can be key value pairs in body  
           # assign each schema less attr as a key/value in body, unless the key already exists as a real column
           unless attrs_to_assign_later.empty?
            attrs_to_assign_later.each do |k, v|
-             if @attributes.has_key?(k.to_s)
+             if @attributes.has_key?(k)
                raise "#{k} is already defined as a database column - skipping assignment to body\n$@"   
              else
-               @attributes['body'][k.to_s] = v 
+               @attributes['body'][k] = v 
              end
            end  
           end
