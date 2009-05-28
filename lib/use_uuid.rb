@@ -79,14 +79,10 @@ module Distributed
    
     module InstanceMethods
       
-      # set 'uuid' attribute upon object creation if a uuid is not already present.
-      # For object creation in the R2 tier, it will always assign a uuid.  For object
-      # creation of Groups, Users, News, and Sources in the B1 tier, the controller
-      # will recieve the uuid assigned by the R2 tier in params and in the arguments
-      # to new, so will not assign a new uuid.
-      # Override this method in each model if other attributes need to be set upon
-      # initialization. Note that initialize is an instance method of the class its
-      # included into.
+      # Sets the 'uuid' attribute upon object creation if a uuid is not already present. 
+      # Assigns value to schema less attributes if they are specified in the arguments.  Otherwise
+      # works just like Rails new().  Schema less attributes will return a nil value if not specified
+      # on object creation.
       def initialize(attrs = {}, &block) 
         # let user specify schema less attrs in the attrs hash just like normal attrs, even though  
         # we haven't initialized them as a key in body yet. 
