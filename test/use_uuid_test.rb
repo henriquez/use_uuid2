@@ -16,6 +16,10 @@ class ModelWithUuidTest < ActiveRecordTest
     obj = ModelWithUuid.new({:url => 'example.com'})
     assert obj.uuid.is_a?(String)  
     assert obj.save!
+    obj = ModelWithUuid.new # should work with no arguments as well
+    assert obj.save!
+    obj = ModelWithUuid.new nil # as if explicitly nil
+    assert obj.save!
   end  
   
   # ModelWithUuid.find(uuid_string) should work

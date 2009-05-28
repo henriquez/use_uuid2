@@ -87,7 +87,9 @@ module Distributed
         # let user specify schema less attrs in the attrs hash just like normal attrs, even though  
         # we haven't initialized them as a key in body yet. 
         # attr keys may be symbols or strings so normalize to strings for comparison
-        attrs = attrs.inject({}) {|memo,(k,v)| memo[k.to_s] = v; memo }
+        if attrs
+          attrs = attrs.inject({}) {|memo,(k,v)| memo[k.to_s] = v; memo }
+        end  
         # to the schema less attrs where we do  the same.
         if schema_less_attrs
           # schema_less_attrs may be symbols or strings, attrs keys are normalized to strings so convert to strings to do comparison
